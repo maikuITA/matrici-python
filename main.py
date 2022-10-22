@@ -2,19 +2,13 @@ from array import array
 from operator import inv
 import numpy as np
 import os
+import time
 
 # ------------------------------------------------------------------------------------------- #
 # Matrix functions - maiku"
 
-maikumatrix = "# Matrix functions - maiku - Build 1.2.1.0"
-
-def print_matrix(matrix): # STAMPA LA MATRICE passata negli argomenti
-    print("[#] Here is your matrix")
-    print(" ")
-    print("A="+ str(matrix))
-    if(n == m):print("(nxn)")
-    else:print("(nxm)")
-    print(" ")
+maikumatrix = "# Matrix functions - maiku - Build 1.2.5"
+toobig = "[#] Wrong matrix size (must be nxn)"
 
 def main_menu(): # MENU PRINCIPALE
     print("[#] Select the operation to perform")
@@ -24,8 +18,8 @@ def main_menu(): # MENU PRINCIPALE
     print("[4] Involutoria (A^2=I)")
     print("[5] Nilpotente [W.I.P.]")
     print("[6] Idempotente (A^2=A)")
-    print("[7] Simmetrica (A*tA=A)")
-    print("[8] Antisimmetrica [W.I.P.]")
+    print("[7] Simmetrica (tA=A)")
+    print("[8] Antisimmetrica (tA=-A)")
     print("[9] Ortogonale (A*tA=I)")
     print("[10] Invertibile [W.I.P.]")
     print("[-1] Exit the program")
@@ -47,9 +41,26 @@ def end_menu(): # MENU FINE OPERAZIONE
         x = int(input(">"))
     return x    
 
+def print_matrix(matrix): # STAMPA LA MATRICE passata negli argomenti
+    print("[#] Here is your matrix")
+    print(" ")
+    print("A="+ str(matrix))
+    if(n == m):print("(nxn)")
+    else:print("(nxm)")
+    print(" ")
+
+def matrix_too_big():
+    if n != m:
+        return True
+    else:
+        return False       
+
 def det_matrice(matrix):
-    det = np.linalg.det(matrix.astype(float)) # CALCOLO det(A)
-    print("det(A) = "+ str(int(det)))
+    if(matrix_too_big):
+        print(toobig)
+    else:
+        det = np.linalg.det(matrix.astype(float)) # CALCOLO det(A)
+        print("det(A) = "+ str(int(det)))
 
 def ran_matrice(matrix):    
     rango = np.linalg.matrix_rank(matrix.astype(float)) # CALCOLO r(A)
@@ -72,135 +83,176 @@ def matrice_unita(): # CALCOLO MATRICE UNITA' (per ogni n dato che n=m) fatta da
     return unità
 
 def matrice_simmetrica(matrix):
-    trans = np.transpose(matrix.astype(float)) 
-    trans = np.reshape(trans, (n, m))
-    matrix = matrix.astype(float) # casting 'unsafe'
-    # CONTROLLO FINALE
-    print(maikumatrix)
-    if np.allclose(matrix, trans):
-        print("[#] La matrice è simmetrica dato che:")
-        print(" ")
-        print("A=")
-        print(matrix)
-        print(" ")
-        print("è uguale alla sua trasposta")
-        print(" ")
-        print("tA=")
-        print(trans)
+    if(matrix_too_big()):
+        print(toobig)
     else:
-        print("[#] La matrice NON è simmetrica dato che:")
-        print(" ")
-        print("A=")
-        print(matrix)
-        print(" ")
-        print("NON è uguale alla sua trasposta")
-        print(" ")
-        print("tA=")
-        print(trans)
+        trans = np.transpose(matrix.astype(float)) # casting 'unsafe'
+        trans = np.reshape(trans, (n, m))
+        matrix = matrix.astype(float) # casting 'unsafe'
+        # CONTROLLO FINALE
+        print(maikumatrix)
+        if np.allclose(matrix, trans):
+            print("[#] La matrice è simmetrica dato che:")
+            print(" ")
+            print("A=")
+            print(matrix)
+            print(" ")
+            print("è uguale alla sua trasposta")
+            print(" ")
+            print("tA=")
+            print(trans)
+        else:
+            print("[#] La matrice NON è simmetrica dato che:")
+            print(" ")
+            print("A=")
+            print(matrix)
+            print(" ")
+            print("NON è uguale alla sua trasposta")
+            print(" ")
+            print("tA=")
+            print(trans)
+
+def matrice_antisimmetrica(matrix):
+    if(matrix_too_big()):
+        print(toobig)
+    else:
+        trans = np.transpose(matrix.astype(float)) # casting 'unsafe'
+        trans = np.reshape(trans, (n, m))
+        matrix = matrix.astype(float) # casting 'unsafe'
+        matrix = matrix * -1
+        # CONTROLLO FINALE
+        print(maikumatrix)
+        if np.allclose(matrix, trans):
+            print("[#] La matrice è antisimmetrica dato che:")
+            print(" ")
+            print("tA=")
+            print(trans)
+            print(" ")
+            print("è uguale a -A")
+            print(" ")
+            print(matrix)
+        else:
+            print("[#] La matrice NON è antisimmetrica dato che:")
+            print(" ")
+            print("tA=")
+            print(trans)
+            print(" ")
+            print("NON è uguale a -A")
+            print(" ")
+            print(matrix)
 
 def matrice_involutoria(matrix):
-    invo = np.linalg.matrix_power(matrix.astype(float), 2)
-    unità = np.identity(n) # sopra trovi anche la mia funzione
-    # CONTROLLO FINALE
-    print(maikumatrix)
-    if np.allclose(invo, unità):
-        print("[#] La matrice è involutoria dato che:")
-        print(" ")
-        print("A=")
-        print(matrix)
-        print(" ")
-        print("moltiplicata per se stessa ha come risultato")
-        print(" ")
-        print("A^2=")
-        print(invo)
-        print(" ")
-        print("che è uguale alla matrice unità")
-        print(" ")
-        print("I=")
-        print(unità)
+    if(matrix_too_big):
+        print(toobig)
     else:
-        print("[#] La matrice NON è involutoria dato che:")
-        print(" ")
-        print("A=")
-        print(matrix)
-        print(" ")
-        print("moltiplicata per se stessa ha come risultato")
-        print(" ")
-        print("A^2=")
-        print(invo)
-        print(" ")
-        print("che NON è uguale alla matrice unità")
-        print(" ")
-        print("I=")
-        print(unità)  
+        invo = np.linalg.matrix_power(matrix.astype(float), 2)
+        unità = np.identity(n) # sopra trovi anche la mia funzione
+        # CONTROLLO FINALE
+        print(maikumatrix)
+        if np.allclose(invo, unità):
+            print("[#] La matrice è involutoria dato che:")
+            print(" ")
+            print("A=")
+            print(matrix)
+            print(" ")
+            print("moltiplicata per se stessa ha come risultato")
+            print(" ")
+            print("A^2=")
+            print(invo)
+            print(" ")
+            print("che è uguale alla matrice unità")
+            print(" ")
+            print("I=")
+            print(unità)
+        else:
+            print("[#] La matrice NON è involutoria dato che:")
+            print(" ")
+            print("A=")
+            print(matrix)
+            print(" ")
+            print("moltiplicata per se stessa ha come risultato")
+            print(" ")
+            print("A^2=")
+            print(invo)
+            print(" ")
+            print("che NON è uguale alla matrice unità")
+            print(" ")
+            print("I=")
+            print(unità)  
 
 def matrice_idempotente(matrix):
-    idem = np.linalg.matrix_power(matrix.astype(float), 2)
-    matrix = matrix.astype(float) # casting 'unsafe'
-    # CONTROLLO FINALE
-    print(maikumatrix)
-    if np.allclose(matrix, idem):
-        print("[#] La matrice è idempotente dato che:")
-        print(" ")
-        print("A=")
-        print(matrix)
-        print(" ")
-        print("moltiplicata per se stessa ha come risultato")
-        print(" ")
-        print("A^2=")
-        print(idem)
-        print(" ")
-        print("che è uguale a se stessa (A=A^2)")
+    if(matrix_too_big):
+        print(toobig)
     else:
-        print("[#] La matrice NON è idempotente dato che:")
-        print(" ")
-        print("A=")
-        print(matrix)
-        print(" ")
-        print("moltiplicata per se stessa ha come risultato")
-        print(" ")
-        print("A^2=")
-        print(idem)
-        print(" ")
-        print("che NON è uguale a se stessa (A!=A^2)")
+        idem = np.linalg.matrix_power(matrix.astype(float), 2)
+        matrix = matrix.astype(float) # casting 'unsafe'
+        # CONTROLLO FINALE
+        print(maikumatrix)
+        if np.allclose(matrix, idem):
+            print("[#] La matrice è idempotente dato che:")
+            print(" ")
+            print("A=")
+            print(matrix)
+            print(" ")
+            print("moltiplicata per se stessa ha come risultato")
+            print(" ")
+            print("A^2=")
+            print(idem)
+            print(" ")
+            print("che è uguale a se stessa (A=A^2)")
+        else:
+            print("[#] La matrice NON è idempotente dato che:")
+            print(" ")
+            print("A=")
+            print(matrix)
+            print(" ")
+            print("moltiplicata per se stessa ha come risultato")
+            print(" ")
+            print("A^2=")
+            print(idem)
+            print(" ")
+            print("che NON è uguale a se stessa (A!=A^2)")
 
 def matrice_ortogonale(matrix):
-    trans = np.transpose(matrix.astype(float)) 
-    trans = np.reshape(trans, (n, m))
-    matrix = matrix.astype(float) # casting 'unsafe'
-    orto = np.dot(matrix,trans)
-    unità = np.identity(n)
-    print(maikumatrix)
-    if np.allclose(orto, unità):
-        print("[#] La matrice è ortogonale dato che:")
-        print(" ")
-        print("A=")
-        print(matrix)
-        print(" ")
-        print("moltiplicata per la sua trasposta")
-        print(" ")
-        print("tA=")
-        print(trans)
-        print(" ")
-        print("ha come risultato la matrice unità")
-        print(" ")
-        print("I=")
-        print(unità)
+    if(matrix_too_big):
+        print(toobig)
     else:
-        print("[#] La matrice NON è ortogonale dato che:")
-        print(" ")
-        print("A=")
-        print(matrix)
-        print(" ")
-        print("moltiplicata per la sua trasposta")
-        print(" ")
-        print("tA=")
-        print(trans)
-        print(" ")
-        print("ha come risultato la matrice B, diversa dalla matrice unità")
-        print(" ")
-        print("B=")
-        print(orto)
+        trans = np.transpose(matrix.astype(float)) 
+        trans = np.reshape(trans, (n, m))
+        matrix = matrix.astype(float) # casting 'unsafe'
+        orto = np.dot(matrix,trans)
+        unità = np.identity(n)
+        print(maikumatrix)
+        if np.allclose(orto, unità):
+            print("[#] La matrice è ortogonale dato che:")
+            print(" ")
+            print("A=")
+            print(matrix)
+            print(" ")
+            print("moltiplicata per la sua trasposta")
+            print(" ")
+            print("tA=")
+            print(trans)
+            print(" ")
+            print("ha come risultato la matrice unità")
+            print(" ")
+            print("I=")
+            print(unità)
+        else:
+            print("[#] La matrice NON è ortogonale dato che:")
+            print(" ")
+            print("A=")
+            print(matrix)
+            print(" ")
+            print("moltiplicata per la sua trasposta")
+            print(" ")
+            print("tA=")
+            print(trans)
+            print(" ")
+            print("ha come risultato la matrice B, diversa dalla matrice unità")
+            print(" ")
+            print("B=")
+            print(orto)
 
 # ------------------------------------------------------------------------------------------- #
 # Python matrix using numpy - maiku"
@@ -269,6 +321,7 @@ while x != 99:
             case 5:
                 # Nilpotente
                 os.system('cls')
+                print("[W.I.P.]")
                 x = end_menu() # END LOOP                
                 os.system('cls')
             case 6:
@@ -286,7 +339,7 @@ while x != 99:
             case 8:
                 # Antisimmetrica
                 os.system('cls')
-                #matrice_antisimm(matrix) # FUNZIONE
+                matrice_antisimmetrica(matrix) # FUNZIONE
                 x = end_menu() # END LOOP 
                 os.system('cls')
             case 9:
@@ -298,12 +351,16 @@ while x != 99:
             case 10:
                 # Invertibile
                 os.system('cls')
+                print("[W.I.P.]")
                 #matrice_invertibile(matrix) # FUNZIONE
                 x = end_menu() # END LOOP 
                 os.system('cls')
             case -1:
                 # Esci
                 os.system('cls')
-                x = 99    
+                x = 99  
+            case other:
+                x = 0 
+                os.system('cls')     
                 
 # --maiku
