@@ -6,6 +6,8 @@ import os
 # ------------------------------------------------------------------------------------------- #
 # Matrix functions - maiku"
 
+maikumatrix = "# Matrix functions - maiku - Build 1.2.1.0"
+
 def print_matrix(matrix): # STAMPA LA MATRICE passata negli argomenti
     print("[#] Here is your matrix")
     print(" ")
@@ -74,7 +76,7 @@ def matrice_simmetrica(matrix):
     trans = np.reshape(trans, (n, m))
     matrix = matrix.astype(float) # casting 'unsafe'
     # CONTROLLO FINALE
-    print("# Matrix functions - maiku - Build 1.2.1.0")
+    print(maikumatrix)
     if np.allclose(matrix, trans):
         print("[#] La matrice è simmetrica dato che:")
         print(" ")
@@ -100,7 +102,7 @@ def matrice_involutoria(matrix):
     invo = np.linalg.matrix_power(matrix.astype(float), 2)
     unità = np.identity(n) # sopra trovi anche la mia funzione
     # CONTROLLO FINALE
-    print("# Matrix functions - maiku - Build 1.2.1.0")
+    print(maikumatrix)
     if np.allclose(invo, unità):
         print("[#] La matrice è involutoria dato che:")
         print(" ")
@@ -136,7 +138,7 @@ def matrice_idempotente(matrix):
     idem = np.linalg.matrix_power(matrix.astype(float), 2)
     matrix = matrix.astype(float) # casting 'unsafe'
     # CONTROLLO FINALE
-    print("# Matrix functions - maiku - Build 1.2.1.0")
+    print(maikumatrix)
     if np.allclose(matrix, idem):
         print("[#] La matrice è idempotente dato che:")
         print(" ")
@@ -168,7 +170,7 @@ def matrice_ortogonale(matrix):
     matrix = matrix.astype(float) # casting 'unsafe'
     orto = np.dot(matrix,trans)
     unità = np.identity(n)
-    print("# Matrix functions - maiku - Build 1.2.1.0")
+    print(maikumatrix)
     if np.allclose(orto, unità):
         print("[#] La matrice è ortogonale dato che:")
         print(" ")
@@ -203,7 +205,7 @@ def matrice_ortogonale(matrix):
 # ------------------------------------------------------------------------------------------- #
 # Python matrix using numpy - maiku"
 os.system('cls')
-print("# Matrix functions - maiku - Build 1.2.1.0")
+print(maikumatrix)
 n = int(input("[#] Insert the row number > "))
 m = int(input("[#] Insert the column number > "))
 
@@ -225,7 +227,7 @@ matrix = np.reshape(matrix, (n, m))
 os.system('cls')
 x = 0
 while x != 99:
-    print("# Matrix functions - maiku - Build 1.2.1.0")
+    print(maikumatrix)
     print_matrix(matrix)
     # MENU SYSTEM
     if(x == 0):
@@ -236,7 +238,7 @@ while x != 99:
             case 1:
                 # Calcolo det(A)
                 os.system('cls')
-                print("# Matrix functions - maiku - Build 1.2.1.0")
+                print(maikumatrix)
                 print_matrix(matrix)
                 det_matrice(matrix) # FUNZIONE
                 x=-1 # ONLY FOR CASE 1 LOOP
@@ -245,7 +247,7 @@ while x != 99:
             case 2:
                 # Calcolo r(A)
                 os.system('cls')
-                print("# Matrix functions - maiku - Build 1.2.1.0")
+                print(maikumatrix)
                 print_matrix(matrix)
                 ran_matrice(matrix) # FUNZIONE
                 x = end_menu() # END LOOP 
@@ -253,7 +255,7 @@ while x != 99:
             case 3:
                 # Trasposta (tA)
                 os.system('cls')
-                print("# Matrix functions - maiku - Build 1.2.1.0")
+                print(maikumatrix)
                 print_matrix(matrix)
                 tra_matrice(matrix) # FUNZIONE
                 x = end_menu() # END LOOP 
