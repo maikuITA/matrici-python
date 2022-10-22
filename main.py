@@ -2,11 +2,10 @@ from array import array
 from operator import inv
 import numpy as np
 import os
-import time
-
 # ------------------------------------------------------------------------------------------- #
 # Matrix functions - maiku"
 
+# SYSTEM MESSAGES
 maikumatrix = "# Matrix functions - maiku - Build 1.4.5"
 toobig = "[#] Wrong matrix size (must be nxn)"
 
