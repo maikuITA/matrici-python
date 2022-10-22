@@ -7,7 +7,7 @@ import time
 # ------------------------------------------------------------------------------------------- #
 # Matrix functions - maiku"
 
-maikumatrix = "# Matrix functions - maiku - Build 1.2.5"
+maikumatrix = "# Matrix functions - maiku - Build 1.4.5"
 toobig = "[#] Wrong matrix size (must be nxn)"
 
 def main_menu(): # MENU PRINCIPALE
@@ -16,12 +16,11 @@ def main_menu(): # MENU PRINCIPALE
     print("[2] Calcolo r(A)")
     print("[3] Trasposta (tA)")
     print("[4] Involutoria (A^2=I)")
-    print("[5] Nilpotente [W.I.P.]")
+    print("[5] Nilpotente (A^n=0)")
     print("[6] Idempotente (A^2=A)")
     print("[7] Simmetrica (tA=A)")
     print("[8] Antisimmetrica (tA=-A)")
     print("[9] Ortogonale (A*tA=I)")
-    print("[10] Invertibile [W.I.P.]")
     print("[-1] Exit the program")
     x = int(input(">"))
     return x
@@ -56,7 +55,7 @@ def matrix_too_big():
         return False       
 
 def det_matrice(matrix):
-    if(matrix_too_big):
+    if(matrix_too_big()):
         print(toobig)
     else:
         det = np.linalg.det(matrix.astype(float)) # CALCOLO det(A)
@@ -142,7 +141,7 @@ def matrice_antisimmetrica(matrix):
             print(matrix)
 
 def matrice_involutoria(matrix):
-    if(matrix_too_big):
+    if(matrix_too_big()):
         print(toobig)
     else:
         invo = np.linalg.matrix_power(matrix.astype(float), 2)
@@ -179,6 +178,40 @@ def matrice_involutoria(matrix):
             print(" ")
             print("I=")
             print(unità)  
+
+def matrice_nilpotente(matrix):
+    if(matrix_too_big()):
+        print(toobig)
+    else:
+        nulla = np.zeros((n,m)) # MATRICE NULLA
+        nil = False
+        for i in range(1, n+1):
+            nilpotente = np.linalg.matrix_power(matrix.astype(float), i) # A^n
+            if np.allclose(nilpotente, nulla): # CONTROLLO SE A = 0
+                nil = True
+                index = i
+                break
+        # CONTROLLO FINALE
+        print(maikumatrix)
+        if nil:
+            print("[#] La matrice è nilpotente dato che:")
+            print(" ")
+            print("A=")
+            print(matrix)
+            print(" ")
+            print("elevata alla "+str(index)+"a")
+            print(" ")
+            print("A^"+str(index)+"=")
+            print(nilpotente)
+            print(" ")
+            print("è uguale alla matrice nulla")
+        else:
+            print("[#] La matrice NON è nilpotente dato che:")
+            print(" ")
+            print("A=")
+            print(matrix)
+            print(" ")
+            print("non ci sono n per i quali A^n è uguale alla matrice nulla (0)")
 
 def matrice_idempotente(matrix):
     if(matrix_too_big):
@@ -321,7 +354,7 @@ while x != 99:
             case 5:
                 # Nilpotente
                 os.system('cls')
-                print("[W.I.P.]")
+                matrice_nilpotente(matrix)
                 x = end_menu() # END LOOP                
                 os.system('cls')
             case 6:
@@ -346,13 +379,6 @@ while x != 99:
                 # Ortogonale
                 os.system('cls')
                 matrice_ortogonale(matrix)
-                x = end_menu() # END LOOP 
-                os.system('cls')
-            case 10:
-                # Invertibile
-                os.system('cls')
-                print("[W.I.P.]")
-                #matrice_invertibile(matrix) # FUNZIONE
                 x = end_menu() # END LOOP 
                 os.system('cls')
             case -1:
